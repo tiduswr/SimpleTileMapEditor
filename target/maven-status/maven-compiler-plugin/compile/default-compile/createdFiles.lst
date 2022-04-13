@@ -1,5 +1,12 @@
-main/TileFrame$2.class
-main/TileFrame.class
-main/TileFrame$1.class
-main/MainPanel.class
-main/SpriteSheet.class
+main\TileSettings.class
+main\BufferedImageLoader.class
+main\TileFrame.class
+main\SpriteSheetLoader.class
+main\MainPanel$1.class
+main\MainPanel.class
+main\TileButton.class
+main\SpriteSheet.class
+main\TileButton$1.class
+main\TileFrame$2.class
+main\TileFrame$1.class
+main\TileButton$2.class

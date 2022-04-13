@@ -24,6 +24,7 @@ public class TileButton extends JButton{
             public void actionPerformed(ActionEvent e) {
                 TileSettings last = spriteSheet.getImage(tileRow, tileCol);
                 spriteSheet.setSelected(last);
+                spriteSheet.updateSelectedItem();
             }
         });
         this.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -40,6 +41,7 @@ public class TileButton extends JButton{
         this.img = img;
         this.tileCol = tileCol;
         this.tileRow = tileRow;
+        this.setFocusable(false);
     }
     
     @Override

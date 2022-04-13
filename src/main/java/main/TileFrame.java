@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class TileFrame extends javax.swing.JPanel {
     
@@ -14,33 +15,61 @@ public class TileFrame extends javax.swing.JPanel {
     private int selectedCol = -1;
     private SpriteSheet sheet;
     private boolean drawGridOn = false;
-    private boolean gridDrawned = false;
+    private MapTile mapTile;
     
     public TileFrame() {
         initComponents();
         this.setBackground(Color.BLACK);
-        
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
+                int x = e.getPoint().x;
+                int y = e.getPoint().y;
                 selectedRow = x/tileSize;
                 selectedCol = y/tileSize;
-                repaint();
                 
+                TileSettings tile = sheet.getSelected();
+                if(tile != null){
+                    mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                    repaint();
+                }
+            }
+        });
+        this.addMouseWheelListener(new MouseAdapter(){
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {           
+                
+                if(tileSize > 0 && (tileSize - e.getWheelRotation()) > 0){
+                    tileSize -= e.getWheelRotation();
+                }
+                if(mapTile.lengthRows()*tileSize < getHeight() || mapTile.lengthCols()*tileSize < getWidth()){
+                    mapTile.setPosition(0, 0);
+                }
+                System.out.println(tileSize);
+                repaint();
             }
         });
         this.addMouseMotionListener(new MouseAdapter(){
             @Override
             public void mouseDragged(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
+                int x = e.getPoint().x;
+                int y = e.getPoint().y;
                 selectedRow = x/tileSize;
                 selectedCol = y/tileSize;
+                
+                TileSettings tile = sheet.getSelected();
+                if(tile != null){
+                    mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                    repaint();
+                }
                 repaint();
             }
         });
+        createMapTile(50, 50);
+    }
+    
+    public void createMapTile(int rows, int cols){
+        mapTile = new MapTile(rows, cols, this);
     }
     
     public void setSheet(SpriteSheet s){
@@ -49,68 +78,54 @@ public class TileFrame extends javax.swing.JPanel {
     
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         
-        drawOnGrid(g2);
-        if(drawGridOn && !gridDrawned) {
-            drawGrid(g2);
-        }
+        //drawOnGrid(g2);
+        drawMap(g2);
         
         g2.dispose();
     }
     
-    public void drawGrid(Graphics2D g2){
-        //Draw grid
+    public void drawMap(Graphics2D g2){
+        int mapx = mapTile.getX();
+        int mapy = mapTile.getY();
         Color oldColor = g2.getColor();
-        g2.setColor(Color.white);
         
-        int gridLength = tileSize*15;
-        int row = 0;
-        for(int i = 0; i < gridLength; i++){
-            int col = 0;
-            for(int j = 0; j < gridLength; j++){
-                g2.drawRect(row, col, tileSize, tileSize);
-                col += tileSize;
-            }
-            row += tileSize;
-        }
-        g2.setColor(oldColor);
-        gridDrawned = true;
-    }
-    
-    private void drawOnGrid(Graphics2D g2){
-        if(selectedRow != -1 && selectedCol != -1){
-            TileSettings tile = sheet.getSelected();
-            if(tile != null){
-                g2.drawImage(tile.getImg(), selectedRow*tileSize, selectedCol*tileSize, tileSize, tileSize, null);
-                if(drawGridOn){
-                    Color oldColor = g2.getColor();
-                    g2.setColor(Color.white);
-                    g2.drawRect(selectedRow*tileSize, selectedCol*tileSize, tileSize, tileSize);
-                    g2.setColor(oldColor);
+        for(int i = 0; i < mapTile.lengthRows() -  mapTile.getX(); i ++){
+            for(int j = 0; j < mapTile.lengthCols() -  mapTile.getY(); j ++){
+                Integer code = mapTile.getCode(i + mapTile.getX(), j + mapTile.getY());
+                g2.setColor(Color.white);
+                if(code != null && code != -1){
+                    TileSettings tile = sheet.getImageByCode(code);
+                    g2.drawImage(tile.getImg(), i*tileSize, j*tileSize, tileSize, tileSize, null);
+                }
+                if(drawGridOn && code != null){
+                    g2.drawRect(i*tileSize, j*tileSize, tileSize, tileSize);
+                }else if(code == null){
+                    g2.setColor(Color.gray);
+                    g2.fillRect(i*tileSize, j*tileSize, tileSize, tileSize);
                 }
             }
         }
+        g2.setColor(oldColor);
     }
     
     public void setDrawGridOn(boolean value){
         this.drawGridOn = value;
+        repaint();
     }
     
     public boolean getDrawGridOn(){
         return this.drawGridOn;
     }
-
-    public boolean isGridDrawned() {
-        return gridDrawned;
-    }
-
-    public void setGridDrawned(boolean gridDrawned) {
-        this.gridDrawned = gridDrawned;
-    }
     
     public int getTileSize() {
         return tileSize;
+    }
+    
+    public MapTile getMapTile(){
+        return mapTile;
     }
     
     @SuppressWarnings("unchecked")
