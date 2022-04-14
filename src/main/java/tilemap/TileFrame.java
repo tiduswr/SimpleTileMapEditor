@@ -3,11 +3,14 @@ package tilemap;
 
 import spritesheet.SpriteSheet;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import javax.swing.SwingUtilities;
 import main.MainPanel;
 
 public class TileFrame extends javax.swing.JPanel {
@@ -19,6 +22,13 @@ public class TileFrame extends javax.swing.JPanel {
     private boolean drawGridOn = false;
     private MapTile mapTile;
     private MainPanel mp;
+    
+    //Handle the drag tileFrame editor
+    private Point firstPressed;
+    private Integer lastPassedRow = null;
+    private Integer lastPassedCol = null;
+    private boolean dragTileEditorStarted = false;
+    private Cursor lastCursor;
     
     public TileFrame() {
         initComponents();
@@ -32,22 +42,35 @@ public class TileFrame extends javax.swing.JPanel {
                 selectedCol = y/tileSize;
                 TileSettings tile = sheet.getSelected();
                 
-                if(mp.getToolBar().getSelectedTool().equals("balde")){
-                    if(tile != null){
-                        mapTile.nearReplacement(selectedRow + mapTile.getX(), selectedCol + mapTile.getY(), 
-                                sheet.getSelected().getCode(), mapTile.getCode(selectedRow + mapTile.getX(), selectedCol + mapTile.getY()));
-                        repaint();
+                if(e.getButton() == MouseEvent.BUTTON1){
+                    if(mp.getToolBar().getSelectedTool().equals("balde")){
+                        if(tile != null){
+                            mapTile.nearReplacement(selectedRow + mapTile.getX(), selectedCol + mapTile.getY(), 
+                                    sheet.getSelected().getCode(), mapTile.getCode(selectedRow + mapTile.getX(), selectedCol + mapTile.getY()));
+                            repaint();
+                        }
+                    }else{
+                        if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
+                                sheet.getSelected().getCode() != -1){
+                            System.out.println(sheet.getSelected().getCode());
+                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                            repaint();
+                        }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")){
+                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                            repaint();
+                        }
                     }
-                }else{
-                    if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
-                            sheet.getSelected().getCode() != -1){
-                        System.out.println(sheet.getSelected().getCode());
-                        mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
-                        repaint();
-                    }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")){
-                        mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
-                        repaint();
-                    }
+                }
+                
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(dragTileEditorStarted){
+                    firstPressed = null;
+                    lastPassedRow = null;
+                    lastPassedCol = null;
+                    dragTileEditorStarted = false;
+                    mp.setCursor(lastCursor);
                 }
             }
         });
@@ -73,14 +96,59 @@ public class TileFrame extends javax.swing.JPanel {
                 selectedRow = x/tileSize;
                 selectedCol = y/tileSize;
                 
-                TileSettings tile = sheet.getSelected();
-                if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    TileSettings tile = sheet.getSelected();
+                    if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
                         sheet.getSelected().getCode() != -1){
-                    mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
-                    repaint();
-                }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")) {
-                    mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
-                    repaint();
+                        mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                        repaint();
+                    }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")) {
+                        mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                        repaint();
+                    }
+                }else{
+                    //Drag mapTileEditor
+                    if(firstPressed == null) firstPressed = e.getPoint();
+                    if(!dragTileEditorStarted) {
+                        lastCursor = mp.getCursor();
+                        mp.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+                    }
+                    
+                    dragTileEditorStarted = true;
+                    int firstSelectedRow = firstPressed.x/tileSize;
+                    int firstSelectedCol = firstPressed.y/tileSize;
+                    int passedRows = selectedRow - firstSelectedRow;
+                    int passedCols = selectedCol - firstSelectedCol;
+                    
+                    if(lastPassedRow == null || lastPassedCol == null){
+                        lastPassedRow = passedRows;
+                        lastPassedCol = passedCols;
+                    }
+                    
+                    if(lastPassedRow != passedRows || lastPassedCol != passedCols){
+                        lastPassedRow = passedRows;
+                        lastPassedCol = passedCols;
+                        
+                        //Esquerda
+                        if(passedRows < 0){
+                            mapTile.left();
+                        }
+                        //Direita
+                        if(passedRows > 0){
+                            mapTile.right();
+                        }
+                        //Cima
+                        if(passedCols < 0){
+                            mapTile.up();
+                        }
+                        //Baixo
+                        if(passedCols > 0){
+                            mapTile.down();
+                        }
+                        firstPressed = e.getPoint();
+                        repaint();
+                    }
+                    
                 }
             }
         });

@@ -26,7 +26,6 @@ public class MapTile {
     }
     
     private void nearReplace(int x, int y, int code, int codeTolReplace, boolean visited[][]){
-        System.out.println("X:" + x + " Y:" + y);
         visited[x][y] = true;
         
         //Cima
