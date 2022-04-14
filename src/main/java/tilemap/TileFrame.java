@@ -13,8 +13,10 @@ import java.awt.event.MouseWheelEvent;
 import javax.swing.SwingUtilities;
 import main.MainPanel;
 
-public class TileFrame extends javax.swing.JPanel {
+public final class TileFrame extends javax.swing.JPanel {
     
+    private int tileMapSize = 50;
+    private int tileSizeSpriteSheet = 16;
     private int tileSize = 32;
     private int selectedRow = -1;
     private int selectedCol = -1;
@@ -152,7 +154,8 @@ public class TileFrame extends javax.swing.JPanel {
                 }
             }
         });
-        createMapTile(50, 50);
+        this.
+        createMapTile(tileMapSize, tileMapSize);
     }
     
     public void createMapTile(int rows, int cols){
@@ -219,6 +222,22 @@ public class TileFrame extends javax.swing.JPanel {
     
     public MapTile getMapTile(){
         return mapTile;
+    }
+
+    public int getTileSizeSpriteSheet() {
+        return tileSizeSpriteSheet;
+    }
+    
+    public int getTileMapSize() {
+        return this.tileMapSize;
+    }
+
+    public void setTileMapSize(int tileMapSize) {
+        this.tileMapSize = tileMapSize;
+    }
+
+    public void setTileSizeSpriteSheet(int tileSizeSpriteSheet) {
+        this.tileSizeSpriteSheet = tileSizeSpriteSheet;
     }
     
     @SuppressWarnings("unchecked")

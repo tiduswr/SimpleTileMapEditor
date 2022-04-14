@@ -16,14 +16,13 @@ public class TileButton extends JButton{
     private Stroke stroke = new BasicStroke(3);
     private Color colorBorder = Color.white;
     private BufferedImage img;
-    private int tileRow, tileCol;
     
-    public TileButton(BufferedImage img, int tileRow, int tileCol, SpriteSheet spriteSheet){
+    public TileButton(BufferedImage img, int index, SpriteSheet spriteSheet){
         this.setBorder(BorderFactory.createLineBorder(Color.white, 1));
         this.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                TileSettings last = spriteSheet.getImage(tileRow, tileCol);
+                TileSettings last = spriteSheet.getImageByCode(index);
                 spriteSheet.setSelected(last);
                 spriteSheet.updateSelectedItem();
             }
@@ -40,8 +39,6 @@ public class TileButton extends JButton{
             }
         });
         this.img = img;
-        this.tileCol = tileCol;
-        this.tileRow = tileRow;
         this.setFocusable(false);
     }
     

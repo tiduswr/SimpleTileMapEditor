@@ -45,6 +45,7 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
             }
         });
         tileFrame.requestFocus();
+        setMapInfo();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
@@ -56,6 +57,12 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         spriteSheet.setMainFrame(this);
         toolBar.setMainPanel(this);
         toolBar.createTools();
+    }
+    
+    public void setMapInfo(){
+        String info = "Map Size: ("+ tileFrame.getTileMapSize() + "x" + tileFrame.getTileMapSize() + 
+                ") / Tile Sieze of Sprite Sheet: " + tileFrame.getTileSizeSpriteSheet();
+        this.projectInfoLabel.setText(info);
     }
     
     public void updateSelectedItem(){
@@ -80,7 +87,7 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        spriteSheet = new spritesheet.SpriteSheet();
+        spriteSheet = new spritesheet.SpriteSheet(this);
         btGrid = new javax.swing.JButton();
         selectedItemView = new javax.swing.JPanel();
         lblSprite = new javax.swing.JLabel();
@@ -88,8 +95,11 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         lblCode = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         toolBar = new toolbar.ToolBar();
+        projectInfo = new javax.swing.JPanel();
+        projectInfoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         mainPanel.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -179,6 +189,29 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
                 .addContainerGap())
         );
 
+        projectInfo.setBackground(new java.awt.Color(0, 0, 0));
+
+        projectInfoLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        projectInfoLabel.setForeground(new java.awt.Color(255, 255, 255));
+        projectInfoLabel.setText("Map Size: (XXxXX) / Tile Sieze of Sprite Sheet: XX");
+
+        javax.swing.GroupLayout projectInfoLayout = new javax.swing.GroupLayout(projectInfo);
+        projectInfo.setLayout(projectInfoLayout);
+        projectInfoLayout.setHorizontalGroup(
+            projectInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(projectInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(projectInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        projectInfoLayout.setVerticalGroup(
+            projectInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(projectInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(projectInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -196,11 +229,12 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
                                 .addComponent(btGrid)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(selectedItemView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(selectedItemView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                            .addComponent(projectInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -219,7 +253,9 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(selectedItemView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(projectInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -231,7 +267,7 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -264,6 +300,8 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
     private javax.swing.JLabel lblCode;
     private javax.swing.JLabel lblSprite;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel projectInfo;
+    private javax.swing.JLabel projectInfoLabel;
     private javax.swing.JPanel selectedItemView;
     private spritesheet.SpriteSheet spriteSheet;
     private tilemap.TileFrame tileFrame;

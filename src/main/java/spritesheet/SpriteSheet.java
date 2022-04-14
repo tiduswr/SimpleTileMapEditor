@@ -1,11 +1,10 @@
 package spritesheet;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import main.MainPanel;
 import tilemap.TileButton;
@@ -14,7 +13,7 @@ import tilemap.TileSettings;
 public class SpriteSheet extends javax.swing.JPanel {
 
     private int tileSize = 32;
-    private int tileSizeSpriteSheet = 16;
+    private int spriteSheetTileSize;
     private BufferedImage spriteSheet;
     private int rows, cols;
     private BufferedImage[][] tiles;
@@ -22,13 +21,23 @@ public class SpriteSheet extends javax.swing.JPanel {
     private TileSettings selected = null;
     private MainPanel mainFrame = null;
     
-    public SpriteSheet() {
+    public SpriteSheet(MainPanel mainFrame) {
+        this.mainFrame = mainFrame;
+        spriteSheetTileSize = mainFrame.getTileFrame().getTileSizeSpriteSheet();
         loadSpriteSheet("tiles01.png");
         
         initComponents();
         this.setBackground(Color.BLACK);
         
-        drawGrid();
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    }
+    
+    public SpriteSheet() {
+        spriteSheetTileSize = 16;
+        loadSpriteSheet("tiles01.png");
+        
+        initComponents();
+        this.setBackground(Color.BLACK);
         
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
@@ -36,24 +45,26 @@ public class SpriteSheet extends javax.swing.JPanel {
     private void loadSpriteSheet(String sheetName){
         BufferedImageLoader loader = new BufferedImageLoader();
         spriteSheet = loader.loadImage(sheetName);
-        rows = spriteSheet.getWidth()/tileSizeSpriteSheet;
-        cols = spriteSheet.getHeight()/tileSizeSpriteSheet;
+        rows = spriteSheet.getWidth()/spriteSheetTileSize;
+        cols = spriteSheet.getHeight()/spriteSheetTileSize;
         tiles = new BufferedImage[rows][cols];
         tilesByIndex = new BufferedImage[rows*cols];
-        SpriteSheetLoader sheetLoader = new SpriteSheetLoader(spriteSheet, tileSizeSpriteSheet);
+        SpriteSheetLoader sheetLoader = new SpriteSheetLoader(spriteSheet, spriteSheetTileSize);
         
         int count = 0;
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
-                tiles[i][j] = sheetLoader.grabImage(i+1, j+1, tileSizeSpriteSheet, tileSizeSpriteSheet);
+                tiles[i][j] = sheetLoader.grabImage(i+1, j+1, spriteSheetTileSize, spriteSheetTileSize);
                 tilesByIndex[count] = tiles[i][j];
                 count++;
             }
         }
+        drawGrid();
     }
     
     private void drawGrid(){
         int count = 0;
+        int countIndex = 0;
         JPanel panel = null;
         
         for(int i = 0; i < rows; i++){
@@ -67,25 +78,23 @@ public class SpriteSheet extends javax.swing.JPanel {
                 }
                  
                 panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
-                SpriteSheetLoader loader = new SpriteSheetLoader(spriteSheet, tileSizeSpriteSheet);
-                TileButton button = new TileButton(tiles[i][j], i, j, this);
+                SpriteSheetLoader loader = new SpriteSheetLoader(spriteSheet, spriteSheetTileSize);
+                TileButton button = new TileButton(tiles[i][j], countIndex, this);
                 button.setMinimumSize(new Dimension(64, 64));
                 button.setPreferredSize(new Dimension(64, 64));
                 button.setMaximumSize(new Dimension(64, 64));
                 panel.add(button);
                 
                 count++;
+                countIndex++;
             }
         }
         revalidate();
     }
     
-    public TileSettings getImage(int row, int col){
-        return new TileSettings(tiles[row][col], row, col, cols);
-    }
-    
     public TileSettings getImageByCode(int code){
-        return new TileSettings(tilesByIndex[code], code, cols);
+        if(!(code >= 0 && code <= tilesByIndex.length));
+        return new TileSettings(tilesByIndex[code], code);
     }
     
     public TileSettings getSelected() {

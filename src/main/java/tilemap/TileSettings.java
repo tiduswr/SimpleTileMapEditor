@@ -6,18 +6,13 @@ import java.awt.image.BufferedImage;
 public class TileSettings {
     private BufferedImage img;
     private int code;
-
-    public TileSettings(BufferedImage img, int row, int col, int cols) {
-        this.img = img;
-        this.code = (((col - 1) * cols) + row) +1;
-    }
     
     public TileSettings(int code) {
         this.img = null;
         this.code = code;
     }
     
-    public TileSettings(BufferedImage img, int code, int cols) {
+    public TileSettings(BufferedImage img, int code) {
         this.img = img;
         this.code = code;
     }
