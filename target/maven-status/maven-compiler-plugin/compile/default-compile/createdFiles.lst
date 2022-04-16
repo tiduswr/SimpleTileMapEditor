@@ -1,3 +1,4 @@
+memento\Memento.class
 tilemap\TileButton$1.class
 tilemap\TileFrame.class
 tilemap\TileSettings.class
@@ -6,6 +7,7 @@ tilemap\TileFrame$2.class
 toolbar\ToolBar.class
 main\MainPanel$1.class
 toolbar\TBItem_Cursor.class
+memento\Originator.class
 main\MainPanel$2.class
 tilemap\TileFrame$1.class
 toolbar\ToolBarItem$2.class
@@ -13,12 +15,18 @@ spritesheet\SpriteSheetLoader.class
 toolbar\Observer.class
 spritesheet\BufferedImageLoader.class
 tilemap\TileFrame$3.class
+memento\CaretakerMemento.class
+tilemap\SelectedArea.class
+tilemap\MapTileBackup.class
 toolbar\ToolBarItem.class
 tilemap\TileButton$2.class
 toolbar\TBItem_Borracha.class
 toolbar\TBItem_Balde.class
 spritesheet\SpriteSheet.class
+toolbar\TBItem_Selection.class
 main\MainPanel.class
 tilemap\MapTile.class
+toolbar\TBItem_Undo.class
 toolbar\ToolBarItem$1.class
 toolbar\Observable.class
+tilemap\LabelSpriteIcon.class

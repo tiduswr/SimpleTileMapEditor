@@ -93,8 +93,9 @@ public class SpriteSheet extends javax.swing.JPanel {
     }
     
     public TileSettings getImageByCode(int code){
-        if(!(code >= 0 && code <= tilesByIndex.length));
+        if(!(code >= 0 && code <= tilesByIndex.length)) return null;
         return new TileSettings(tilesByIndex[code], code);
+        
     }
     
     public TileSettings getSelected() {

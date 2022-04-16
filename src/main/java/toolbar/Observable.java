@@ -3,5 +3,5 @@ package toolbar;
 import main.MainPanel;
 
 public interface Observable {
-    public void updateSelectedTile(MainPanel mp);
+    public void update(MainPanel mp);
 }

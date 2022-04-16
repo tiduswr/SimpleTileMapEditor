@@ -10,7 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import main.MainPanel;
-import tilemap.TileSettings;
 
 public class ToolBarItem extends JLabel implements Observable{
     private ArrayList<Observer> observers;
@@ -19,7 +18,6 @@ public class ToolBarItem extends JLabel implements Observable{
         Image tmp = icon.getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         BufferedImage dimg = new BufferedImage(32, 2, BufferedImage.TYPE_INT_ARGB);
         setIcon(new ImageIcon(tmp));
-        this.setBorder(BorderFactory.createLineBorder(Color.white, 1));
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -27,7 +25,7 @@ public class ToolBarItem extends JLabel implements Observable{
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                setBorder(BorderFactory.createLineBorder(Color.white, 1));
+                setBorder(null);
             }
         });
         this.addMouseListener(new MouseAdapter(){
@@ -50,6 +48,6 @@ public class ToolBarItem extends JLabel implements Observable{
     }
 
     @Override
-    public void updateSelectedTile(MainPanel mp) {
+    public void update(MainPanel mp) {
     }
 }

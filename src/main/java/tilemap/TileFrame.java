@@ -1,4 +1,4 @@
-
+ 
 package tilemap;
 
 import spritesheet.SpriteSheet;
@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.SwingUtilities;
 import main.MainPanel;
+import memento.CaretakerMemento;
 
 public final class TileFrame extends javax.swing.JPanel {
     
@@ -25,6 +26,10 @@ public final class TileFrame extends javax.swing.JPanel {
     private MapTile mapTile;
     private MainPanel mp;
     
+    //Handle Mementos
+    private CaretakerMemento caretaker;
+    private boolean saved = false;
+    
     //Handle the drag tileFrame editor
     private Point firstPressed;
     private Integer lastPassedRow = null;
@@ -32,12 +37,23 @@ public final class TileFrame extends javax.swing.JPanel {
     private boolean dragTileEditorStarted = false;
     private Cursor lastCursor;
     
+    //Handle Selection Tool
+    private boolean selectionStarted;
+    private int lastSelectedRow = -1;
+    private int lastSelectedCol = -1;
+    
     public TileFrame() {
         initComponents();
         this.setBackground(Color.GRAY);
+        
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e) {
+                if(!saved){
+                    saved = true;
+                    caretaker.saveState();
+                }
+                
                 int x = e.getPoint().x;
                 int y = e.getPoint().y;
                 selectedRow = x/tileSize;
@@ -45,6 +61,7 @@ public final class TileFrame extends javax.swing.JPanel {
                 TileSettings tile = sheet.getSelected();
                 
                 if(e.getButton() == MouseEvent.BUTTON1){
+                    //FERRAMENTAS
                     if(mp.getToolBar().getSelectedTool().equals("balde")){
                         if(tile != null){
                             mapTile.nearReplacement(selectedRow + mapTile.getX(), selectedCol + mapTile.getY(), 
@@ -54,11 +71,12 @@ public final class TileFrame extends javax.swing.JPanel {
                     }else{
                         if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
                                 sheet.getSelected().getCode() != -1){
-                            System.out.println(sheet.getSelected().getCode());
-                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), 
+                                    selectedCol + mapTile.getY());
                             repaint();
                         }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")){
-                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), 
+                                    selectedCol + mapTile.getY());
                             repaint();
                         }
                     }
@@ -74,6 +92,19 @@ public final class TileFrame extends javax.swing.JPanel {
                     dragTileEditorStarted = false;
                     mp.setCursor(lastCursor);
                 }
+                saved = false;
+                if(selectionStarted){
+                    if(selectedRow - lastSelectedRow >= 0 &&  selectedCol - lastSelectedCol >= 0){
+                        System.out.println(lastSelectedCol + " " + lastSelectedRow + " " + selectedRow + " " + selectedCol);
+                        mapTile.setSelection(lastSelectedRow + mapTile.getX(), lastSelectedCol + mapTile.getY(), 
+                            selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
+                        mp.getSelectedAreaFrame().setImage(mapTile.getSelectedArea());
+                    }
+                    
+                    selectionStarted = false;
+                    lastSelectedRow = -1;
+                    lastSelectedCol = -1;
+                }
             }
         });
         this.addMouseWheelListener(new MouseAdapter(){
@@ -83,16 +114,17 @@ public final class TileFrame extends javax.swing.JPanel {
                 if(tileSize > 0 && (tileSize - e.getWheelRotation()) > 0){
                     tileSize -= e.getWheelRotation();
                 }
-                //Seta as coordenadas em x=0; y=0 quando o mapa esta totalmente na tela
-                /*if(mapTile.lengthRows()*tileSize < getHeight() || mapTile.lengthCols()*tileSize < getWidth()){
-                    mapTile.setPosition(0, 0);
-                }*/
                 repaint();
             }
         });
         this.addMouseMotionListener(new MouseAdapter(){
             @Override
             public void mouseDragged(MouseEvent e) {
+                if(!saved && !mp.getToolBar().getSelectedTool().equals("selection")){
+                    saved = true;
+                    caretaker.saveState();
+                }
+                
                 int x = e.getPoint().x;
                 int y = e.getPoint().y;
                 selectedRow = x/tileSize;
@@ -107,50 +139,19 @@ public final class TileFrame extends javax.swing.JPanel {
                     }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")) {
                         mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
                         repaint();
-                    }
-                }else{
-                    //Drag mapTileEditor
-                    if(firstPressed == null) firstPressed = e.getPoint();
-                    if(!dragTileEditorStarted) {
-                        lastCursor = mp.getCursor();
-                        mp.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-                    }
-                    
-                    dragTileEditorStarted = true;
-                    int firstSelectedRow = firstPressed.x/tileSize;
-                    int firstSelectedCol = firstPressed.y/tileSize;
-                    int passedRows = selectedRow - firstSelectedRow;
-                    int passedCols = selectedCol - firstSelectedCol;
-                    
-                    if(lastPassedRow == null || lastPassedCol == null){
-                        lastPassedRow = passedRows;
-                        lastPassedCol = passedCols;
-                    }
-                    
-                    if(lastPassedRow != passedRows || lastPassedCol != passedCols){
-                        lastPassedRow = passedRows;
-                        lastPassedCol = passedCols;
-                        
-                        //Esquerda
-                        if(passedRows < 0){
-                            mapTile.left();
+                    }else if(mp.getToolBar().getSelectedTool().equals("selection")){
+                        if(!selectionStarted){
+                            lastSelectedRow = selectedRow;
+                            lastSelectedCol = selectedCol;
                         }
-                        //Direita
-                        if(passedRows > 0){
-                            mapTile.right();
+                        if(!((selectedRow + mapTile.getX()) < 0 || (selectedCol + mapTile.getY()) < 0)){
+                            selectionStarted = !((selectedRow + mapTile.getX()) >= tileMapSize || 
+                                    (selectedCol + mapTile.getY()) >= tileMapSize);
                         }
-                        //Cima
-                        if(passedCols < 0){
-                            mapTile.up();
-                        }
-                        //Baixo
-                        if(passedCols > 0){
-                            mapTile.down();
-                        }
-                        firstPressed = e.getPoint();
                         repaint();
                     }
-                    
+                }else{
+                    dragTileMapEditor(e);
                 }
             }
         });
@@ -158,16 +159,52 @@ public final class TileFrame extends javax.swing.JPanel {
         createMapTile(tileMapSize, tileMapSize);
     }
     
+    private void dragTileMapEditor(MouseEvent e){
+        if(firstPressed == null) firstPressed = e.getPoint();
+        if(!dragTileEditorStarted) {
+            lastCursor = mp.getCursor();
+            mp.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+        }
+
+        dragTileEditorStarted = true;
+        int firstSelectedRow = firstPressed.x/tileSize;
+        int firstSelectedCol = firstPressed.y/tileSize;
+        int passedRows = selectedRow - firstSelectedRow;
+        int passedCols = selectedCol - firstSelectedCol;
+
+        if(lastPassedRow == null || lastPassedCol == null){
+            lastPassedRow = passedRows;
+            lastPassedCol = passedCols;
+        }
+
+        if(lastPassedRow != passedRows || lastPassedCol != passedCols){
+            lastPassedRow = passedRows;
+            lastPassedCol = passedCols;
+
+            //Esquerda
+            if(passedRows < 0){
+                mapTile.left();
+            }
+            //Direita
+            if(passedRows > 0){
+                mapTile.right();
+            }
+            //Cima
+            if(passedCols < 0){
+                mapTile.up();
+            }
+            //Baixo
+            if(passedCols > 0){
+                mapTile.down();
+            }
+            firstPressed = e.getPoint();
+            repaint();
+        }
+    }
+    
     public void createMapTile(int rows, int cols){
         mapTile = new MapTile(rows, cols, this);
-    }
-    
-    public void setSheet(SpriteSheet s){
-        this.sheet = s;
-    }
-    
-    public void setMainPanel(MainPanel mp){
-        this.mp = mp;
+        caretaker = new CaretakerMemento(mapTile);
     }
     
     @Override
@@ -178,7 +215,31 @@ public final class TileFrame extends javax.swing.JPanel {
         //drawOnGrid(g2);
         drawMap(g2);
         
+        if(selectionStarted){
+            drawSelection(g2);
+        }
+        
         g2.dispose();
+    }
+    
+    public void drawSelection(Graphics2D g2){
+        Color oldColor = g2.getColor();
+        g2.setColor(Color.red);
+        
+        int firstX, firstY, lastX, lastY;
+        
+        if(selectedRow >= lastSelectedRow && selectedCol >= lastSelectedCol){
+            firstX = lastSelectedRow*tileSize;
+            firstY = lastSelectedCol*tileSize;
+            lastX = (selectedRow*tileSize)+tileSize;
+            lastY = (selectedCol*tileSize)+tileSize;
+            lastX -= firstX;
+            lastY -= firstY;
+            g2.drawRect(firstX, firstY, lastX, lastY);
+        }
+        
+        
+        g2.setColor(oldColor);
     }
     
     public void drawMap(Graphics2D g2){
@@ -204,6 +265,7 @@ public final class TileFrame extends javax.swing.JPanel {
                 }
             }
         }
+        
         g2.setColor(oldColor);
     }
     
@@ -238,6 +300,18 @@ public final class TileFrame extends javax.swing.JPanel {
 
     public void setTileSizeSpriteSheet(int tileSizeSpriteSheet) {
         this.tileSizeSpriteSheet = tileSizeSpriteSheet;
+    }
+
+    public CaretakerMemento getCaretaker() {
+        return caretaker;
+    }
+    
+    public void setSheet(SpriteSheet s){
+        this.sheet = s;
+    }
+    
+    public void setMainPanel(MainPanel mp){
+        this.mp = mp;
     }
     
     @SuppressWarnings("unchecked")

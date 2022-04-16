@@ -1,23 +1,31 @@
 package tilemap;
 
-public class MapTile {
+import memento.Memento;
+import memento.Originator;
+
+public class MapTile implements Originator<int[][]>{
     private int mapCodes[][], rows, cols, x, y;
+    private int selectedArea[][];
     private TileFrame tf;
     
     public MapTile(int rows, int cols, TileFrame tf){
-        mapCodes = new int[rows][cols];
-        
-        for(int i = 0; i < mapCodes.length; i++){
-            for(int j = 0; j < mapCodes[i].length; j++){
-                mapCodes[i][j] = -1;
-            }
-        }
-        
         x = 0;
         y = 0;
         this.rows = rows;
         this.cols = cols;
+        
+        createEmptyArray();
+        
         this.tf = tf;
+    }
+    
+    private void createEmptyArray(){
+        mapCodes = new int[rows][cols];
+        for (int[] mapCode : mapCodes) {
+            for (int j = 0; j < mapCode.length; j++) {
+                mapCode[j] = -1;
+            }
+        }
     }
     
     public void nearReplacement(int x, int y, int code, int codeTolReplace){
@@ -100,6 +108,32 @@ public class MapTile {
     public void right(){
         x --;
     }
+
+    public int[][] getSelectedArea() {
+        return selectedArea;
+    }
+    
+    public void setSelection(int x1, int y1, int x2, int y2){
+        
+        int selRows = x2 - x1 + 1;
+        int selCols = y2 - y1 + 1;
+        int i2 = 0;
+        int j2 = 0;
+        selectedArea = new int[selRows][selCols];
+        
+        for(int i = x1; i < x2+1; i++){
+          for(int j = y1; j < y2+1; j++){
+              selectedArea[i2][j2] = mapCodes[i][j];
+              System.out.println("v[" + i2 + "][" + j2 + "]" + selectedArea[i2][j2]);
+              j2++;
+          }
+          j2 = 0;
+          i2++;
+        }
+        
+        System.out.println("Selected Area: " + selRows +" Rows " + selCols + " Cols");
+        
+    }
     
     public void setPosition(int x, int y){
         if(x >= 0 && y >= 0 && x < rows && y < cols){
@@ -113,6 +147,29 @@ public class MapTile {
                 this.y = 0;
             }
         }
+    }
+
+    @Override
+    public void setMemento(Memento<int[][]> m) {
+        if(m != null){
+            this.mapCodes = m.getState();
+        }else{
+            createEmptyArray();
+        }
+    }
+
+    @Override
+    public Memento<int[][]> createMemento() {
+        int [][] backup = new int[mapCodes.length][mapCodes[0].length];
+        boolean diference;
+        
+        for(int i = 0; i < mapCodes.length; i++){
+          for(int j = 0; j < mapCodes[0].length; j++){
+              backup[i][j] = mapCodes[i][j];
+          }
+        }
+        
+        return new MapTileBackup(backup);
     }
     
 }

@@ -9,14 +9,13 @@ import spritesheet.BufferedImageLoader;
 import tilemap.TileSettings;
 
 public class TBItem_Borracha extends ToolBarItem{
-    private ArrayList<Observer> observers;
     
     public TBItem_Borracha(){
         super(new BufferedImageLoader().loadImage("tools/borracha.png"));
     }
     
     @Override
-    public void updateSelectedTile(MainPanel mp) {
+    public void update(MainPanel mp) {
         mp.getSpriteSheetPanel().setSelected(new TileSettings(-1));
         mp.updateSelectedItem();
         mp.getToolBar().setSelectedTool("borracha");

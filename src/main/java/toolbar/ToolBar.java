@@ -26,10 +26,14 @@ public final class ToolBar extends JPanel{
     public void createTools(){
         TBItem_Cursor cursor = new TBItem_Cursor();
         createTool(cursor);
+        TBItem_Selection selection = new TBItem_Selection();
+        createTool(selection);
         TBItem_Borracha borracha = new TBItem_Borracha();
         createTool(borracha);
         TBItem_Balde balde = new TBItem_Balde();
         createTool(balde);
+        TBItem_Undo undo = new TBItem_Undo();
+        createTool(undo);
     }
     
     private void createTool(ToolBarItem t){
