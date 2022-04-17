@@ -64,6 +64,51 @@ public class MapTile implements Originator<int[][]>{
         if(mapCodes[x][y] == codeTolReplace) mapCodes[x][y] = code;
     }
     
+    public void placeSubImageAt(int x, int y, int[][] codes){
+        if(x >= 0 && y >= 0 && x < cols && y < rows){
+            for(int i = 0; i < codes.length; i++){
+                for(int j = 0; j < codes[0].length; j++){
+                    if(i+x < mapCodes.length && j+y < mapCodes[0].length){
+                        mapCodes[i+x][j+y] = codes[i][j];
+                    }
+                }
+            }
+        }
+    }
+    
+    public void setSelection(int x1, int y1, int x2, int y2){
+        
+        int selRows = x2 - x1 + 1;
+        int selCols = y2 - y1 + 1;
+        int i2 = 0;
+        int j2 = 0;
+        selectedArea = new int[selRows][selCols];
+        
+        for(int i = x1; i < x2+1; i++){
+          for(int j = y1; j < y2+1; j++){
+              selectedArea[i2][j2] = mapCodes[i][j];
+              j2++;
+          }
+          j2 = 0;
+          i2++;
+        }
+        
+    }
+    
+    public void setPosition(int x, int y){
+        if(x >= 0 && y >= 0 && x < rows && y < cols){
+            this.x = x;
+            this.y = y;
+        }else{
+            if(x < 0 && x < rows){
+                this.x = 0;
+            }
+            if(y < 0 && y < cols){
+                this.y = 0;
+            }
+        }
+    }
+    
     public Integer getCode(int row, int col){
         if(row >= 0 && col >= 0 && row < rows && col < cols){
             return mapCodes[row][col];
@@ -113,42 +158,10 @@ public class MapTile implements Originator<int[][]>{
         return selectedArea;
     }
     
-    public void setSelection(int x1, int y1, int x2, int y2){
-        
-        int selRows = x2 - x1 + 1;
-        int selCols = y2 - y1 + 1;
-        int i2 = 0;
-        int j2 = 0;
-        selectedArea = new int[selRows][selCols];
-        
-        for(int i = x1; i < x2+1; i++){
-          for(int j = y1; j < y2+1; j++){
-              selectedArea[i2][j2] = mapCodes[i][j];
-              System.out.println("v[" + i2 + "][" + j2 + "]" + selectedArea[i2][j2]);
-              j2++;
-          }
-          j2 = 0;
-          i2++;
-        }
-        
-        System.out.println("Selected Area: " + selRows +" Rows " + selCols + " Cols");
-        
+    public void resetSelectedArea(){
+        this.selectedArea = null;
     }
     
-    public void setPosition(int x, int y){
-        if(x >= 0 && y >= 0 && x < rows && y < cols){
-            this.x = x;
-            this.y = y;
-        }else{
-            if(x < 0 && x < rows){
-                this.x = 0;
-            }
-            if(y < 0 && y < cols){
-                this.y = 0;
-            }
-        }
-    }
-
     @Override
     public void setMemento(Memento<int[][]> m) {
         if(m != null){

@@ -24,27 +24,37 @@ public class SpriteSheet extends javax.swing.JPanel {
     public SpriteSheet(MainPanel mainFrame) {
         this.mainFrame = mainFrame;
         spriteSheetTileSize = mainFrame.getTileFrame().getTileSizeSpriteSheet();
-        loadSpriteSheet("tiles01.png");
-        
-        initComponents();
-        this.setBackground(Color.BLACK);
-        
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        loadSpriteSheet("tiles01.png", false);
+        start();
+    }
+    
+    public SpriteSheet(MainPanel mainFrame, String externalPath) {
+        this.mainFrame = mainFrame;
+        spriteSheetTileSize = mainFrame.getTileFrame().getTileSizeSpriteSheet();
+        loadSpriteSheet(externalPath, true);
+        start();
     }
     
     public SpriteSheet() {
         spriteSheetTileSize = 16;
-        loadSpriteSheet("tiles01.png");
-        
+        loadSpriteSheet("tiles01.png", false);
+        start();
+    }
+    
+    private void start(){
         initComponents();
         this.setBackground(Color.BLACK);
         
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
     
-    private void loadSpriteSheet(String sheetName){
+    private void loadSpriteSheet(String path, boolean externalPath){
         BufferedImageLoader loader = new BufferedImageLoader();
-        spriteSheet = loader.loadImage(sheetName);
+        if(!externalPath) {
+            spriteSheet = loader.loadImage(path);
+        }else{
+            spriteSheet = loader.loadExternalImage(path);
+        }
         rows = spriteSheet.getWidth()/spriteSheetTileSize;
         cols = spriteSheet.getHeight()/spriteSheetTileSize;
         tiles = new BufferedImage[rows][cols];

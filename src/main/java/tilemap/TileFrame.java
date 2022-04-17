@@ -37,12 +37,21 @@ public final class TileFrame extends javax.swing.JPanel {
     private boolean dragTileEditorStarted = false;
     private Cursor lastCursor;
     
-    //Handle Selection Tool
-    private boolean selectionStarted;
-    private int lastSelectedRow = -1;
-    private int lastSelectedCol = -1;
+    //Handle Selection
+    private int hoverRow = -1, hoverCol = -1;
+    private SelectionHandler selectionHandler;
     
     public TileFrame() {
+        start();
+    }
+    
+    public TileFrame(int tileMapSize, int tileSizeSpriteSheet) {
+        this.tileMapSize = tileMapSize;
+        this.tileSizeSpriteSheet = tileSizeSpriteSheet;
+        start();
+    }
+    
+    public void start(){
         initComponents();
         this.setBackground(Color.GRAY);
         
@@ -62,26 +71,28 @@ public final class TileFrame extends javax.swing.JPanel {
                 
                 if(e.getButton() == MouseEvent.BUTTON1){
                     //FERRAMENTAS
-                    if(mp.getToolBar().getSelectedTool().equals("balde")){
-                        if(tile != null){
-                            mapTile.nearReplacement(selectedRow + mapTile.getX(), selectedCol + mapTile.getY(), 
-                                    sheet.getSelected().getCode(), mapTile.getCode(selectedRow + mapTile.getX(), selectedCol + mapTile.getY()));
-                            repaint();
-                        }
-                    }else{
-                        if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
+                    if(tile != null && mp.getToolBar().getSelectedTool().equals("balde")){
+                        mapTile.nearReplacement(selectedRow + mapTile.getX(), selectedCol + mapTile.getY(), 
+                                sheet.getSelected().getCode(), mapTile.getCode(selectedRow + mapTile.getX(), 
+                                        selectedCol + mapTile.getY()));
+                        
+                    }else if(tile != null && mp.getToolBar().getSelectedTool().equals("cursor") && 
                                 sheet.getSelected().getCode() != -1){
-                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), 
-                                    selectedCol + mapTile.getY());
-                            repaint();
-                        }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")){
-                            mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), 
-                                    selectedCol + mapTile.getY());
-                            repaint();
-                        }
+                        mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), 
+                                selectedCol + mapTile.getY());
+                        
+                    }else if(tile != null && mp.getToolBar().getSelectedTool().equals("borracha")){
+                        mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), 
+                                selectedCol + mapTile.getY());
+                    }else if(mapTile.getSelectedArea() != null && mp.getToolBar().getSelectedTool().equals("pasteTool")){
+                        mapTile.placeSubImageAt(selectedRow + mapTile.getX(), selectedCol + mapTile.getY(), 
+                                mapTile.getSelectedArea());
                     }
+                    
+                    //Atualiza a area selecionada em tempo real
+                    if(selectionHandler != null) selectionHandler.updateSelectionOnScreen();
+                    repaint();
                 }
-                
             }
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -93,18 +104,10 @@ public final class TileFrame extends javax.swing.JPanel {
                     mp.setCursor(lastCursor);
                 }
                 saved = false;
-                if(selectionStarted){
-                    if(selectedRow - lastSelectedRow >= 0 &&  selectedCol - lastSelectedCol >= 0){
-                        System.out.println(lastSelectedCol + " " + lastSelectedRow + " " + selectedRow + " " + selectedCol);
-                        mapTile.setSelection(lastSelectedRow + mapTile.getX(), lastSelectedCol + mapTile.getY(), 
-                            selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
-                        mp.getSelectedAreaFrame().setImage(mapTile.getSelectedArea());
-                    }
-                    
-                    selectionStarted = false;
-                    lastSelectedRow = -1;
-                    lastSelectedCol = -1;
-                }
+                
+                //Handle selection Function
+                if(selectionHandler != null) selectionHandler.updateSelectionOnScreen();
+                repaint();
             }
         });
         this.addMouseWheelListener(new MouseAdapter(){
@@ -113,6 +116,13 @@ public final class TileFrame extends javax.swing.JPanel {
                 
                 if(tileSize > 0 && (tileSize - e.getWheelRotation()) > 0){
                     tileSize -= e.getWheelRotation();
+                    selectionHandler.setTileSize(tileSize);
+                    
+                    //Update hoverRow and hoverCol values
+                    int x = e.getPoint().x;
+                    int y = e.getPoint().y;
+                    hoverRow = x/tileSize;
+                    hoverCol = y/tileSize;
                 }
                 repaint();
             }
@@ -140,22 +150,22 @@ public final class TileFrame extends javax.swing.JPanel {
                         mapTile.setCode(sheet.getSelected().getCode(), selectedRow + mapTile.getX(), selectedCol + mapTile.getY());
                         repaint();
                     }else if(mp.getToolBar().getSelectedTool().equals("selection")){
-                        if(!selectionStarted){
-                            lastSelectedRow = selectedRow;
-                            lastSelectedCol = selectedCol;
-                        }
-                        if(!((selectedRow + mapTile.getX()) < 0 || (selectedCol + mapTile.getY()) < 0)){
-                            selectionStarted = !((selectedRow + mapTile.getX()) >= tileMapSize || 
-                                    (selectedCol + mapTile.getY()) >= tileMapSize);
-                        }
+                        if(selectionHandler != null) selectionHandler.updateLocationLogic(selectedRow, selectedCol);
                         repaint();
                     }
                 }else{
                     dragTileMapEditor(e);
                 }
             }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int x = e.getPoint().x;
+                int y = e.getPoint().y;
+                hoverRow = x/tileSize;
+                hoverCol = y/tileSize;
+                repaint();
+            }
         });
-        this.
         createMapTile(tileMapSize, tileMapSize);
     }
     
@@ -184,19 +194,26 @@ public final class TileFrame extends javax.swing.JPanel {
             //Esquerda
             if(passedRows < 0){
                 mapTile.left();
+                selectionHandler.left();
             }
             //Direita
             if(passedRows > 0){
                 mapTile.right();
+                selectionHandler.right();
             }
             //Cima
             if(passedCols < 0){
                 mapTile.up();
+                selectionHandler.up();
             }
             //Baixo
             if(passedCols > 0){
                 mapTile.down();
+                selectionHandler.down();
             }
+            
+            hoverRow += passedRows;
+            hoverCol += passedCols;
             firstPressed = e.getPoint();
             repaint();
         }
@@ -212,47 +229,33 @@ public final class TileFrame extends javax.swing.JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         
-        //drawOnGrid(g2);
+        //Draw map
         drawMap(g2);
         
-        if(selectionStarted){
-            drawSelection(g2);
+        if(selectionHandler != null){
+            //Draw selection Stroke
+            if(selectionHandler.isSelected()) selectionHandler.drawSelection(g2);
+            //Draw selected image
+            if(mp.getToolBar().getSelectedTool().equals("pasteTool")){
+                selectionHandler.drawSelectedImage(g2, getWidth(), getHeight(), hoverRow, hoverCol);
+            }
         }
         
         g2.dispose();
     }
     
-    public void drawSelection(Graphics2D g2){
-        Color oldColor = g2.getColor();
-        g2.setColor(Color.red);
-        
-        int firstX, firstY, lastX, lastY;
-        
-        if(selectedRow >= lastSelectedRow && selectedCol >= lastSelectedCol){
-            firstX = lastSelectedRow*tileSize;
-            firstY = lastSelectedCol*tileSize;
-            lastX = (selectedRow*tileSize)+tileSize;
-            lastY = (selectedCol*tileSize)+tileSize;
-            lastX -= firstX;
-            lastY -= firstY;
-            g2.drawRect(firstX, firstY, lastX, lastY);
-        }
-        
-        
-        g2.setColor(oldColor);
-    }
-    
     public void drawMap(Graphics2D g2){
-        int mapx = mapTile.getX();
-        int mapy = mapTile.getY();
         Color oldColor = g2.getColor();
         
         for(int i = 0; i < mapTile.lengthRows() -  mapTile.getX(); i ++){
             for(int j = 0; j < mapTile.lengthCols() -  mapTile.getY(); j ++){
                 Integer code = mapTile.getCode(i + mapTile.getX(), j + mapTile.getY());
+                
+                //Draw black tiles for -1 codes
                 g2.setColor(Color.black);
-                g2.fillRect(i*tileSize, j*tileSize, tileSize, tileSize);
+                g2.fillRect(i*tileSize, j*tileSize, tileSize, tileSize); 
                 g2.setColor(Color.white);
+                
                 if(code != null && code != -1){
                     TileSettings tile = sheet.getImageByCode(code);
                     g2.drawImage(tile.getImg(), i*tileSize, j*tileSize, tileSize, tileSize, null);
@@ -293,7 +296,13 @@ public final class TileFrame extends javax.swing.JPanel {
     public int getTileMapSize() {
         return this.tileMapSize;
     }
-
+    
+    public void resetSelectedArea(){
+        mapTile.resetSelectedArea();
+        mp.getSelectedAreaFrame().setImage(null);
+        startSelectionHandler();
+    }
+    
     public void setTileMapSize(int tileMapSize) {
         this.tileMapSize = tileMapSize;
     }
@@ -312,6 +321,18 @@ public final class TileFrame extends javax.swing.JPanel {
     
     public void setMainPanel(MainPanel mp){
         this.mp = mp;
+    }
+
+    public SelectionHandler getSelectionHandler() {
+        return selectionHandler;
+    }
+    
+    public void startSelectionHandler(){
+        selectionHandler = new SelectionHandler(mapTile, mp, tileSize, tileMapSize);
+    }
+    
+    public void selectionVisible(boolean state){
+       selectionHandler.setSelected(state);
     }
     
     @SuppressWarnings("unchecked")

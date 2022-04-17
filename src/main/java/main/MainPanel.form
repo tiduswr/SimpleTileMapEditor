@@ -49,13 +49,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="projectInfo" alignment="0" max="32767" attributes="0"/>
                       <Component id="tileFrame" alignment="1" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="toolBar" min="-2" pref="398" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btGrid" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
                       <Component id="jLabel2" max="32767" attributes="0"/>
+                      <Component id="toolBar" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -81,18 +76,10 @@
                       <Component id="jLabel2" pref="35" max="32767" attributes="0"/>
                       <Component id="jLabel1" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="btGrid" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="toolBar" min="-2" pref="41" max="-2" attributes="0"/>
-                              <Component id="selectedItemView" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="toolBar" min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="selectedItemView" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -185,15 +172,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="btGrid">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Grid OFF"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btGridActionPerformed"/>
-          </Events>
-        </Component>
         <Container class="javax.swing.JPanel" name="selectedItemView">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -321,7 +299,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="projectInfoLabel" max="32767" attributes="0"/>
+                      <Component id="projectInfoLabel" pref="466" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

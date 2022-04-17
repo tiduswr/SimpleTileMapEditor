@@ -2,6 +2,7 @@ package toolbar;
 
 import main.MainPanel;
 import spritesheet.BufferedImageLoader;
+import tilemap.TileFrame;
 
 public class TBItem_Undo extends ToolBarItem{
     public TBItem_Undo(){
@@ -10,7 +11,10 @@ public class TBItem_Undo extends ToolBarItem{
     
     @Override
     public void update(MainPanel mp) {
-        mp.getTileFrame().getCaretaker().undo();
+        TileFrame tf = mp.getTileFrame();
+        
+        tf.getCaretaker().undo();
+        if(tf.getSelectionHandler() != null) tf.getSelectionHandler().updateSelectionOnScreen();
         mp.getTileFrame().repaint();
     }
 }

@@ -22,7 +22,7 @@ public final class SelectedArea extends javax.swing.JPanel {
         if(codes != null){
             this.lblInfo.setText("Size of Selection: " + codes.length + " x " + codes[0].length);
         }else{
-            this.lblInfo.setText("Size of Selection: XX x XX");        
+            this.lblInfo.setText("Size of Selection: Nothing Selected!");        
         }
         img.updateImage(codes);
     }

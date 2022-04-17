@@ -42,6 +42,11 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
                 if(code == KeyEvent.VK_D){
                     tileFrame.getMapTile().left();
                 }
+                if(code == KeyEvent.VK_ESCAPE){
+                    System.out.println("ESC");
+                    tileFrame.resetSelectedArea();
+                    tileFrame.selectionVisible(false);
+                }
                 repaint();
             }
         });
@@ -55,6 +60,7 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         this.setResizable(false);
         tileFrame.setSheet(spriteSheet);
         tileFrame.setMainPanel(this);
+        tileFrame.startSelectionHandler();
         spriteSheet.setMainFrame(this);
         toolBar.setMainPanel(this);
         toolBar.createTools();
@@ -90,7 +96,6 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         spriteSheet = new spritesheet.SpriteSheet(this);
-        btGrid = new javax.swing.JButton();
         selectedItemView = new javax.swing.JPanel();
         lblSprite = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -133,14 +138,6 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setFocusable(false);
         jScrollPane1.setViewportView(spriteSheet);
-
-        btGrid.setText("Grid OFF");
-        btGrid.setFocusable(false);
-        btGrid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btGridActionPerformed(evt);
-            }
-        });
 
         selectedItemView.setBackground(new java.awt.Color(0, 0, 0));
         selectedItemView.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -206,7 +203,7 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
             projectInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(projectInfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(projectInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(projectInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
                 .addContainerGap())
         );
         projectInfoLayout.setVerticalGroup(
@@ -226,12 +223,8 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(projectInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tileFrame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btGrid)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(selectedItemView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -250,15 +243,10 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btGrid))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(selectedItemView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectedItemView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(mainPanelLayout.createSequentialGroup()
@@ -286,17 +274,6 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btGridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGridActionPerformed
-        if(tileFrame.getDrawGridOn()){
-            tileFrame.setDrawGridOn(false);
-            btGrid.setText("Grid OFF");
-        }else{
-            tileFrame.setDrawGridOn(true);
-            btGrid.setText("Grid ON");
-        }
-        repaint();
-    }//GEN-LAST:event_btGridActionPerformed
-
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new MainPanel().setVisible(true);
@@ -304,7 +281,6 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btGrid;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
