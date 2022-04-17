@@ -114,6 +114,8 @@ public class SelectionHandler {
         int i2 = hoverRow, j2 = hoverCol;
         
         if(codes != null && mp != null){
+            Color oldColor = g2.getColor();
+            Stroke oldStroke = g2.getStroke();
             
             for(int i = 0; i < codes.length; i++){
                 for(int j = 0; j < codes[0].length; j++){
@@ -129,6 +131,11 @@ public class SelectionHandler {
                 i2++;
             }
             
+            g2.setStroke(dashed);
+            g2.setColor(Color.red);
+            g2.drawRect(hoverRow*tileSize, hoverCol*tileSize, tileSize*codes.length, tileSize*codes[0].length);
+            g2.setStroke(oldStroke);
+            g2.setColor(oldColor);
         }
     }
 

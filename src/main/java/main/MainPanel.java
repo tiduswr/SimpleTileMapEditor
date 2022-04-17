@@ -1,11 +1,15 @@
 package main;
 
+import filehandler.StoreData;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import spritesheet.BufferedImageLoader;
 import spritesheet.SpriteSheet;
 import tilemap.SelectedArea;
 import tilemap.TileFrame;
@@ -15,9 +19,65 @@ import toolbar.ToolBar;
 
 public final class MainPanel extends javax.swing.JFrame implements Observer{
     
+    private int tileMapSize = 50, spriteSize = 16;
+    private File spriteSheetFile;
+    private BufferedImage spriteSheetLoadedFromProject = null;
+    private TileFrame tfConfig;
+    
     public MainPanel() {
+        tfConfig = new TileFrame(tileMapSize, spriteSize);
         initComponents();
-        setup();
+        setIconToMainPanel();
+        startConfigs();
+        tileFrame.setSheet(spriteSheet);
+        setupTileFrame();
+    }
+
+    public MainPanel(int tileMapSize, int spriteSize, File spriteSheet) {
+        this.tileMapSize = tileMapSize;
+        this.spriteSize = spriteSize;
+        this.spriteSheetFile = spriteSheet;
+        tfConfig = new TileFrame(tileMapSize, spriteSize);
+        
+        initComponents();
+        setIconToMainPanel();
+        setupTileFrame();
+        
+        //Start SpriteSheet
+        this.spriteSheet = new SpriteSheet(this, spriteSheetFile.getAbsolutePath());
+        this.jScrollPane1.setViewportView(this.spriteSheet);
+        tileFrame.setSheet(this.spriteSheet);
+        
+        startConfigs();
+    }
+    
+    public MainPanel(StoreData data) throws IOException {
+        tfConfig = new TileFrame(data.getTileMapSize(), data.getSpriteSize(), data.getMapCodes());
+        initComponents();
+        
+        this.tileMapSize = data.getTileMapSize();
+        this.spriteSize = data.getSpriteSize();
+        this.spriteSheetFile = null;
+        this.spriteSheetLoadedFromProject = data.getSpriteSheet();
+        setupTileFrame();
+        
+        //Start SpriteSheet
+        this.spriteSheet = new spritesheet.SpriteSheet(this, spriteSheetLoadedFromProject);
+        this.jScrollPane1.setViewportView(this.spriteSheet);
+        tileFrame.setSheet(this.spriteSheet);
+        
+        startConfigs();
+    }
+    
+    private void setIconToMainPanel(){
+        BufferedImageLoader loader = new BufferedImageLoader();
+        BufferedImage buff = loader.loadImage("menu/icon.png");
+        this.setIconImage(buff);
+        this.setTitle("Simple Tile Map Editor");
+    }
+    
+    private void startConfigs(){
+        generalSetup();
         tileFrame.addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent e) {
@@ -55,16 +115,18 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public void setup(){
+    private void generalSetup(){
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        tileFrame.setSheet(spriteSheet);
-        tileFrame.setMainPanel(this);
-        tileFrame.startSelectionHandler();
-        spriteSheet.setMainFrame(this);
+        spriteSheetFile = new File(getClass().getResource("/tiles01.png").getPath());
         toolBar.setMainPanel(this);
         toolBar.createTools();
         selectedArea.setMainPanel(this);
+    }
+    
+    private void setupTileFrame(){
+        tileFrame.setMainPanel(this);
+        tileFrame.startSelectionHandler();
     }
     
     public void setMapInfo(){
@@ -85,17 +147,20 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
             lblSprite.setIcon(null);
         }
     }
+
+    public BufferedImage getSpriteSheetLoadedFromProject() {
+        return spriteSheetLoadedFromProject;
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        tileFrame = new tilemap.TileFrame();
+        tileFrame = tfConfig;
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        spriteSheet = new spritesheet.SpriteSheet(this);
         selectedItemView = new javax.swing.JPanel();
         lblSprite = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -137,7 +202,6 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
 
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setFocusable(false);
-        jScrollPane1.setViewportView(spriteSheet);
 
         selectedItemView.setBackground(new java.awt.Color(0, 0, 0));
         selectedItemView.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -274,12 +338,9 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainPanel().setVisible(true);
-        });
-    }
-
+    //Other variables
+    private SpriteSheet spriteSheet;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -293,13 +354,12 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
     private javax.swing.JLabel projectInfoLabel;
     private tilemap.SelectedArea selectedArea;
     private javax.swing.JPanel selectedItemView;
-    private spritesheet.SpriteSheet spriteSheet;
     private tilemap.TileFrame tileFrame;
     private toolbar.ToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void update(Observable o) {
+    public void notify(Observable o) {
         o.update(this);
     }
     

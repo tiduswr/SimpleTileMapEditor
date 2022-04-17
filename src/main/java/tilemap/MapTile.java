@@ -19,6 +19,15 @@ public class MapTile implements Originator<int[][]>{
         this.tf = tf;
     }
     
+    public MapTile(int mapCodes[][], TileFrame tf){
+        x = 0;
+        y = 0;
+        this.rows = mapCodes.length;
+        this.cols = mapCodes[0].length;
+        this.mapCodes = mapCodes;
+        this.tf = tf;
+    }
+    
     private void createEmptyArray(){
         mapCodes = new int[rows][cols];
         for (int[] mapCode : mapCodes) {
@@ -62,6 +71,10 @@ public class MapTile implements Originator<int[][]>{
         }
         
         if(mapCodes[x][y] == codeTolReplace) mapCodes[x][y] = code;
+    }
+    
+    public int[][] getData(){
+        return mapCodes;
     }
     
     public void placeSubImageAt(int x, int y, int[][] codes){

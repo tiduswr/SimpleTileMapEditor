@@ -37,13 +37,15 @@ public class ToolBarItem extends JLabel implements Observable{
         observers = new ArrayList<>();
     }
     
+    @Override
     public void registerObserver(Observer o){
         this.observers.add(o);
     }
     
-    private void notifyAllObservers() {
+    @Override
+    public void notifyAllObservers() {
         observers.forEach(o -> {
-            o.update(this);
+            o.notify(this);
         });
     }
 

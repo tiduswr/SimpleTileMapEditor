@@ -119,6 +119,9 @@
               <Dimension value="[480, 480]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="tfConfig"/>
+          </AuxValues>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -164,13 +167,6 @@
           </Properties>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="spritesheet.SpriteSheet" name="spriteSheet">
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new spritesheet.SpriteSheet(this)"/>
-              </AuxValues>
-            </Component>
-          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="selectedItemView">
           <Properties>

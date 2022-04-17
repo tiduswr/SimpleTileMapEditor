@@ -1,6 +1,5 @@
 package spritesheet;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -25,6 +24,7 @@ public class SpriteSheet extends javax.swing.JPanel {
         this.mainFrame = mainFrame;
         spriteSheetTileSize = mainFrame.getTileFrame().getTileSizeSpriteSheet();
         loadSpriteSheet("tiles01.png", false);
+        configSpriteSheet();
         start();
     }
     
@@ -32,12 +32,22 @@ public class SpriteSheet extends javax.swing.JPanel {
         this.mainFrame = mainFrame;
         spriteSheetTileSize = mainFrame.getTileFrame().getTileSizeSpriteSheet();
         loadSpriteSheet(externalPath, true);
+        configSpriteSheet();
+        start();
+    }
+    
+    public SpriteSheet(MainPanel mainFrame, BufferedImage spriteSheet) {
+        this.mainFrame = mainFrame;
+        spriteSheetTileSize = mainFrame.getTileFrame().getTileSizeSpriteSheet();
+        this.spriteSheet = spriteSheet;
+        configSpriteSheet();
         start();
     }
     
     public SpriteSheet() {
         spriteSheetTileSize = 16;
         loadSpriteSheet("tiles01.png", false);
+        configSpriteSheet();
         start();
     }
     
@@ -55,6 +65,9 @@ public class SpriteSheet extends javax.swing.JPanel {
         }else{
             spriteSheet = loader.loadExternalImage(path);
         }
+    }
+    
+    private void configSpriteSheet(){
         rows = spriteSheet.getWidth()/spriteSheetTileSize;
         cols = spriteSheet.getHeight()/spriteSheetTileSize;
         tiles = new BufferedImage[rows][cols];
@@ -122,6 +135,10 @@ public class SpriteSheet extends javax.swing.JPanel {
     
     public void setMainFrame(MainPanel fr){
         this.mainFrame = fr;
+    }
+
+    public BufferedImage getSpriteSheet() {
+        return spriteSheet;
     }
     
     @SuppressWarnings("unchecked")

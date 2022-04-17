@@ -43,12 +43,21 @@ public final class TileFrame extends javax.swing.JPanel {
     
     public TileFrame() {
         start();
+        createMapTile(tileMapSize, tileMapSize);
     }
     
     public TileFrame(int tileMapSize, int tileSizeSpriteSheet) {
         this.tileMapSize = tileMapSize;
         this.tileSizeSpriteSheet = tileSizeSpriteSheet;
         start();
+        createMapTile(tileMapSize, tileMapSize);
+    }
+    
+    public TileFrame(int tileMapSize, int tileSizeSpriteSheet, int[][] codes) {
+        this.tileMapSize = tileMapSize;
+        this.tileSizeSpriteSheet = tileSizeSpriteSheet;
+        start();
+        createMapTile(codes);
     }
     
     public void start(){
@@ -166,7 +175,6 @@ public final class TileFrame extends javax.swing.JPanel {
                 repaint();
             }
         });
-        createMapTile(tileMapSize, tileMapSize);
     }
     
     private void dragTileMapEditor(MouseEvent e){
@@ -221,6 +229,11 @@ public final class TileFrame extends javax.swing.JPanel {
     
     public void createMapTile(int rows, int cols){
         mapTile = new MapTile(rows, cols, this);
+        caretaker = new CaretakerMemento(mapTile);
+    }
+    
+    public void createMapTile(int[][] map){
+        mapTile = new MapTile(map, this);
         caretaker = new CaretakerMemento(mapTile);
     }
     

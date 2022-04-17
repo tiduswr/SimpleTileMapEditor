@@ -24,6 +24,10 @@ public final class ToolBar extends JPanel{
     }
     
     public void createTools(){
+        TBItem_SaveProject save = new TBItem_SaveProject();
+        createTool(save);
+        TBItem_Export export = new TBItem_Export();
+        createTool(export);
         TBItem_Cursor cursor = new TBItem_Cursor();
         createTool(cursor);
         TBItem_Selection selection = new TBItem_Selection();

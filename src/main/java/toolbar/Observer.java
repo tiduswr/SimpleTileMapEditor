@@ -1,5 +1,5 @@
 package toolbar;
 
 public interface Observer {
-    public void update(Observable o);
+    public void notify(Observable o);
 }
