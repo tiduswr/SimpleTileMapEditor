@@ -50,16 +50,16 @@ public class TBItem_SaveProject extends ToolBarItem{
                     oos.writeObject(data);
 
                 }catch(FileNotFoundException ex){
+                    JOptionPane.showMessageDialog(null, "Error trying to save File!");
                     Logger.getLogger(TBItem_SaveProject.class.getName()).log(Level.SEVERE,null, ex);
-                    JOptionPane.showMessageDialog(null, "Erro ao tentar salvar");
                 } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error trying to save File!");
                     Logger.getLogger(TBItem_SaveProject.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "Erro ao tentar salvar");
                 } finally {
                     try {
                         fout.close();
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Erro ao tentar salvar");
+                        JOptionPane.showMessageDialog(null, "Error trying to save File!");
                         Logger.getLogger(TBItem_SaveProject.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }

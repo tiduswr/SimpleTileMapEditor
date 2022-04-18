@@ -6,6 +6,7 @@ toolbar\ToolBar.class
 toolbar\TBItem_Export.class
 toolbar\TBItem_Cursor.class
 filehandler\StoreData.class
+projectmanager\LoadTextMap$2.class
 projectmanager\CreateProject.class
 spritesheet\SpriteSheetLoader.class
 toolbar\TBItem_PasteTool.class
@@ -16,10 +17,13 @@ tilemap\SelectionHandler.class
 spritesheet\SpriteSheet.class
 toolbar\TBItem_Selection.class
 toolbar\TBItem_Undo.class
+main\ProjectManager$3.class
 projectmanager\LoadProject$1.class
 memento\Memento.class
+projectmanager\LoadTextMap$1.class
 tilemap\TileButton$1.class
 toolbar\TBItem_SaveProject.class
+projectmanager\LoadTextMap.class
 projectmanager\CreateProject$1.class
 tilemap\TileButton.class
 main\MainPanel$1.class
@@ -45,3 +49,4 @@ filehandler\FileTypeFilter.class
 toolbar\Observable.class
 main\ProjectManager.class
 tilemap\LabelSpriteIcon.class
+projectmanager\LoadTextMap$3.class

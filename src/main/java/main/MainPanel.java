@@ -54,6 +54,7 @@ public final class MainPanel extends javax.swing.JFrame implements Observer{
     public MainPanel(StoreData data) throws IOException {
         tfConfig = new TileFrame(data.getTileMapSize(), data.getSpriteSize(), data.getMapCodes());
         initComponents();
+        setIconToMainPanel();
         
         this.tileMapSize = data.getTileMapSize();
         this.spriteSize = data.getSpriteSize();

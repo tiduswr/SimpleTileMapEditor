@@ -19,6 +19,11 @@
                 <Property name="text" type="java.lang.String" value="Load Project"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuOptLoadText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Load Text File"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

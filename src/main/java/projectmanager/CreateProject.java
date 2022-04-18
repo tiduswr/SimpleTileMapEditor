@@ -46,7 +46,7 @@ public class CreateProject extends javax.swing.JPanel {
                 if(pm.checkIntegrityProject(getTileMapSize(), getSpriteSize(), getSpriteSheet())){
                     pm.createNewProject(getTileMapSize(), getSpriteSize(), getSpriteSheet());
                 }else{
-                    JOptionPane.showMessageDialog(null, "Preencha todas as informações corretamente!");
+                    JOptionPane.showMessageDialog(null, "Some filds are incorrect!");
                 }
             }
         

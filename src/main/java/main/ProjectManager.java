@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import projectmanager.CreateProject;
 import projectmanager.LoadProject;
+import projectmanager.LoadTextMap;
 import spritesheet.BufferedImageLoader;
 
 public final class ProjectManager extends javax.swing.JFrame {
@@ -48,6 +49,15 @@ public final class ProjectManager extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 panelLayout.removeAll();
                 panelLayout.add(new LoadProject(ProjectManager.this));
+                revalidate();
+                repaint();
+            }
+        });
+        menuOptLoadText.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelLayout.removeAll();
+                panelLayout.add(new LoadTextMap(ProjectManager.this));
                 revalidate();
                 repaint();
             }
@@ -93,6 +103,7 @@ public final class ProjectManager extends javax.swing.JFrame {
         menuBarOptions = new javax.swing.JMenu();
         menuOptCreateProject = new javax.swing.JMenuItem();
         menuOptLoadProject = new javax.swing.JMenuItem();
+        menuOptLoadText = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,6 +173,9 @@ public final class ProjectManager extends javax.swing.JFrame {
         menuOptLoadProject.setText("Load Project");
         menuBarOptions.add(menuOptLoadProject);
 
+        menuOptLoadText.setText("Load Text File");
+        menuBarOptions.add(menuOptLoadText);
+
         menuBar.add(menuBarOptions);
 
         setJMenuBar(menuBar);
@@ -217,6 +231,7 @@ public final class ProjectManager extends javax.swing.JFrame {
     private javax.swing.JMenu menuBarOptions;
     private javax.swing.JMenuItem menuOptCreateProject;
     private javax.swing.JMenuItem menuOptLoadProject;
+    private javax.swing.JMenuItem menuOptLoadText;
     private javax.swing.JPanel panelBackground;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JPanel panelLayout;

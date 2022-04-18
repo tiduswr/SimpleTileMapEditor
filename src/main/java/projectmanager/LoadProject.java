@@ -62,17 +62,17 @@ public class LoadProject extends javax.swing.JPanel {
                 return (StoreData) ois.readObject();
                 
             } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Error trying to read File!");
                 Logger.getLogger(LoadProject.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Erro ao tentar ler o arquivo");
             } catch (IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Error trying to read File!");
                 Logger.getLogger(LoadProject.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Erro ao tentar ler o arquivo");
             } finally {
                 try {
                     fis.close();
                 } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error trying to read File!");
                     Logger.getLogger(LoadProject.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "Erro ao tentar ler o arquivo");
                 }
             }
         }
