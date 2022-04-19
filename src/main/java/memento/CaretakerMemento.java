@@ -5,11 +5,11 @@ import java.util.Stack;
 
 public class CaretakerMemento {
     
-    private Stack<Memento> undo;
+    private StaticStack<Memento> undo;
     private Originator o;
     
     public CaretakerMemento(Originator o){
-        undo = new Stack<>();
+        undo = new StaticStack<>(new Memento[50]);
         this.o = o;
     }
     
@@ -19,12 +19,8 @@ public class CaretakerMemento {
     }
     
     public void undo(){
-        if(!undo.isEmpty()){
-            Memento item = undo.pop();
-            o.setMemento(item);
-        }else{
-            o.setMemento(null);
-        }
+        Memento item = undo.pop();
+        o.setMemento(item);
         System.out.println("undo");
     }
     

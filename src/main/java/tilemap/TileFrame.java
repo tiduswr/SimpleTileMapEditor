@@ -139,9 +139,11 @@ public final class TileFrame extends javax.swing.JPanel {
         this.addMouseMotionListener(new MouseAdapter(){
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(!saved && !mp.getToolBar().getSelectedTool().equals("selection")){
-                    saved = true;
-                    caretaker.saveState();
+                if(!saved){
+                    if(!mp.getToolBar().getSelectedTool().equals("selection")){
+                        saved = true;
+                        caretaker.saveState();
+                    }
                 }
                 
                 int x = e.getPoint().x;
