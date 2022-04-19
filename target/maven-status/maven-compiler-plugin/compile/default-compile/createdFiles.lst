@@ -17,6 +17,7 @@ tilemap\SelectionHandler.class
 spritesheet\SpriteSheet.class
 toolbar\TBItem_Selection.class
 toolbar\TBItem_Undo.class
+memento\StaticStack.class
 main\ProjectManager$3.class
 projectmanager\LoadProject$1.class
 memento\Memento.class
