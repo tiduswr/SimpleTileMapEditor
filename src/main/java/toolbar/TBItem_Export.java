@@ -32,16 +32,10 @@ public class TBItem_Export extends ToolBarItem{
             try{
                 String filePath = fs.getSelectedFile().getAbsolutePath() + ".txt";
                 FileWriter fw = new FileWriter(filePath);
-                boolean opt = JOptionPane.showConfirmDialog(null, "Export the map roted rotated?", "Just asking...",
-                                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-                
                 for (int i = 0; i < map.length; i++) {
                     for (int j = 0; j < map[0].length; j++) {
-                        if(opt){
-                            fw.write(String.valueOf(map[j][i]));
-                        }else{
-                            fw.write(String.valueOf(map[i][j]));
-                        }
+                        //Save rotated
+                        fw.write(String.valueOf(map[j][i]));
                         if(j != map[0].length - 1) fw.write(" ");
                     }
                     fw.write("\n");

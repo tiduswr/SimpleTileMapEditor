@@ -1,35 +1,35 @@
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\MapTileBackup.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\spritesheet\BufferedImageLoader.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_SaveProject.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\TileButton.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\TileSettings.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\Observable.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\filehandler\StoreData.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Balde.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\spritesheet\SpriteSheetLoader.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Grid.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\memento\Memento.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\projectmanager\LoadProject.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\LabelSpriteIcon.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\spritesheet\SpriteSheet.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Export.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\ToolBar.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\memento\CaretakerMemento.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Borracha.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_PasteTool.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\projectmanager\CreateProject.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\main\MainPanel.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\memento\StaticStack.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\ToolBarItem.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Selection.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\main\ProjectManager.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\memento\Originator.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Cursor.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\projectmanager\LoadTextMap.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\TBItem_Undo.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\filehandler\FileTypeFilter.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\SelectionHandler.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\toolbar\Observer.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\SelectedArea.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\MapTile.java
-E:\Documentos Usuario\HARLLEM\Netbeans Projects\SimpleTileMapEditor\src\main\java\tilemap\TileFrame.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Selection.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/SelectedArea.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/main/ProjectManager.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_SaveProject.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/filehandler/StoreData.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/LabelSpriteIcon.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/SelectionHandler.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/main/MainPanel.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/TileSettings.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/spritesheet/SpriteSheetLoader.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_PasteTool.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Undo.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/memento/Originator.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/MapTileBackup.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/projectmanager/LoadTextMap.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/Observable.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/spritesheet/BufferedImageLoader.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Export.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Borracha.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/TileButton.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Balde.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/projectmanager/CreateProject.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/TileFrame.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/filehandler/FileTypeFilter.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Grid.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/memento/CaretakerMemento.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/memento/StaticStack.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/TBItem_Cursor.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/tilemap/MapTile.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/projectmanager/LoadProject.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/spritesheet/SpriteSheet.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/ToolBarItem.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/ToolBar.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/memento/Memento.java
+/home/tiduswr/NetBeansProjects/SimpleTileMapEditor/src/main/java/toolbar/Observer.java

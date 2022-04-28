@@ -110,23 +110,11 @@ public class LoadTextMap extends javax.swing.JPanel {
                     if(lineCount == columnCount){
                         if(isNumeric(txtSpriteSize.getText())){
                             int[][] map = new int[lineCount][columnCount];
-                            int row;
-                            int col;
-                            
                             for (int i = 0; i < map.length; i++) {
                                 for(int j = 0; j < map[0].length; j++){
-                                    //See if the Rotate option is active
-                                    System.out.println(optRotate.isSelected());
-                                    if(!optRotate.isSelected()){
-                                        row = i;
-                                        col = j;
-                                    }else{
-                                        row = j;
-                                        col = i;
-                                    }
                                     
-                                    if(isNumeric(fileString[row][col])){
-                                        map[i][j] = Integer.parseInt(fileString[row][col]);
+                                    if(isNumeric(fileString[j][i])){
+                                        map[i][j] = Integer.parseInt(fileString[j][i]);
                                     }else{
                                         map[i][j] = -1;
                                     }
@@ -176,7 +164,6 @@ public class LoadTextMap extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtSpriteSize = new javax.swing.JTextField();
-        optRotate = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(0, 0, 0));
 
@@ -234,10 +221,6 @@ public class LoadTextMap extends javax.swing.JPanel {
         txtSpriteSize.setForeground(new java.awt.Color(255, 255, 255));
         txtSpriteSize.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
-        optRotate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        optRotate.setForeground(new java.awt.Color(255, 255, 255));
-        optRotate.setText("Rotate");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -245,7 +228,6 @@ public class LoadTextMap extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(optRotate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -260,7 +242,7 @@ public class LoadTextMap extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -295,9 +277,7 @@ public class LoadTextMap extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(txtSpriteSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(optRotate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addComponent(btLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -314,7 +294,6 @@ public class LoadTextMap extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JCheckBox optRotate;
     private javax.swing.JTextField txtSpriteSheet;
     private javax.swing.JTextField txtSpriteSize;
     private javax.swing.JTextField txtTextMap;
